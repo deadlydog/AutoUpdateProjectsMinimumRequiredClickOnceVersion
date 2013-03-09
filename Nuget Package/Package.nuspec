@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AutoUpdateProjectsMinimumRequiredClickOnceVersion</id>
         <version>0.0.0.0</version>
         <title>AutoUpdateProjectsMinimumRequiredClickOnceVersion</title>
         <authors>Daniel Schroeder,iQmetrix</authors>
         <owners>Daniel Schroeder,iQmetrix</owners>
+        <licenseUrl>https://aupmrcov.codeplex.com/license</licenseUrl>
+        <projectUrl>https://aupmrcov.codeplex.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Adds a post-build event to the project to run a powershell script that updates the ClickOnce application's minimum required version in the .csproj file to the latest published version.
 Because the .csproj file is modified outside of Visual Studio by the powershell script, the first successful build after publishing a new ClickOnce version of the app will ask you to reload the project.  I recommend installing the "Workspace Reloader" Visual Studio extension to prevent the reloading of the project from closing any tabs that you have open.</description>
         <summary>Automatically force the ClickOnce app to update itself without prompting the user.</summary>
+        <copyright>Daniel Schroeder 2013</copyright>
         <tags>ClickOnce Click Once Auto Automatic Automatically Update Project Minimum Required Version PowerShell Power Shell</tags>
-        <dependencies />
     </metadata>
     <files>
         <file src="..\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" target="content\PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" />
