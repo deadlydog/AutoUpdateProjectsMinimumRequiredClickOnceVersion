@@ -9,7 +9,8 @@
         <licenseUrl>https://aupmrcov.codeplex.com/license</licenseUrl>
         <projectUrl>https://aupmrcov.codeplex.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Adds a post-build event to the project to run a powershell script that updates the ClickOnce application's minimum required version in the .csproj file to the latest published version.
+        <description>Automatically force the ClickOnce app to update itself without prompting the user, making a less obtrusive end-user experience and guaranteeing they are always using the latest version of the application.
+Adds a post-build event to the project to run a powershell script that updates the ClickOnce application's minimum required version in the .csproj file to the latest published version.
 Because the .csproj file is modified outside of Visual Studio by the powershell script, the first successful build after publishing a new ClickOnce version of the app will ask you to reload the project.  I recommend installing the "Workspace Reloader" Visual Studio extension to prevent the reloading of the project from closing any tabs that you have open.</description>
         <summary>Automatically force the ClickOnce app to update itself without prompting the user.</summary>
         <copyright>Daniel Schroeder 2013</copyright>
