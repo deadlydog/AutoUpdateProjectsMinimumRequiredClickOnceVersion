@@ -13,7 +13,7 @@ REM Update the ClickOnce MinimumRequiredVersion so that it auto-updates without 
 PowerShell -ExecutionPolicy Bypass -Command "& '$(ProjectDir)PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1' -ProjectFilePaths '$(ProjectPath)'"
 '@
 
-# Add the Post-Build Event Code to the project and save it.
-$postBuildEventText += $postBuildEventCode
-$project.Properties.Item(“PostBuildEvent”).Value = $postBuildEventText
+# Add the Post-Build Event Code to the project and save it (prepend a couple newlines in case there is existing Post Build Event text).
+$postBuildEventText += "`n`r`n`r$postBuildEventCode"
+$project.Properties.Item(“PostBuildEvent”).Value = $postBuildEventText.Trim()
 $project.Save()

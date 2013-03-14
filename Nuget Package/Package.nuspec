@@ -10,11 +10,11 @@
         <projectUrl>https://aupmrcov.codeplex.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Automatically force the ClickOnce app to update itself without prompting the user, making a less obtrusive end-user experience and guaranteeing they are always using the latest version of the application.
-Adds a post-build event to the project to run a powershell script that updates the ClickOnce application's minimum required version in the .csproj file to the latest published version.
-Because the .csproj file is modified outside of Visual Studio by the powershell script, the first successful build after publishing a new ClickOnce version of the app will ask you to reload the project.  I recommend installing the "Workspace Reloader" Visual Studio extension to prevent the reloading of the project from closing any tabs that you have open.</description>
+Adds a post-build event to the project to run a powershell script that updates the ClickOnce project's minimum required version in the .csproj/.vbproj file to the latest published version.
+Because the powershell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.</description>
         <summary>Automatically force the ClickOnce app to update itself without prompting the user.</summary>
         <copyright>Daniel Schroeder 2013</copyright>
-        <tags>ClickOnce Click Once Auto Automatic Automatically Update Project Minimum Required Version PowerShell Power Shell</tags>
+        <tags>ClickOnce Click Once Auto Automatic Automatically Update Project Minimum Min Required Version PowerShell Power Shell</tags>
     </metadata>
     <files>
         <file src="..\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" target="content\PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" />

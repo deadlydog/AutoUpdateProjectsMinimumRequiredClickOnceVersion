@@ -9,5 +9,5 @@ PowerShell -ExecutionPolicy Bypass -Command "& '$(ProjectDir)PostBuildScripts\Au
 
 # Remove the Post-Build Event Code to the project and save it.
 $postBuildEventText = $postBuildEventText.Replace($postBuildEventCode, "")
-$project.Properties.Item(“PostBuildEvent”).Value = $postBuildEventText
+$project.Properties.Item(“PostBuildEvent”).Value = $postBuildEventText.Trim()
 $project.Save()
