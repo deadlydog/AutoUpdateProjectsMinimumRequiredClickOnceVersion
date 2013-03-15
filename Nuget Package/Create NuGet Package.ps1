@@ -3,15 +3,15 @@ param
 	[parameter(Position=0,Mandatory=$false,HelpMessage="The new 4 hex-value version number to use for the NuGet Package.")]
 	[ValidatePattern("^\d{1,5}\.\d{1,5}\.\d{1,5}\.\d{1,5}$")]
 	[Alias("v")]
-	[String] $VersionNumber,
+	[string] $VersionNumber,
 	
-	[String] $NuSpecFilePath = ".\Package.nuspec",
+	[string] $NuSpecFilePath = ".\Package.nuspec",
 	
-	[String] $ProjectFilePath,
+	[string] $ProjectFilePath,
 	
-	[String] $ReleaseNotes,
+	[string] $ReleaseNotes,
 	
-	[String] $NoNuspecVersionOverwrite
+	[string] $NoNuspecVersionOverwrite
 )
 
 # If a Version Number was not provided, prompt for one.
