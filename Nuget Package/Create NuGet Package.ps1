@@ -5,7 +5,7 @@ param
 	[Alias("v")]
 	[string] $VersionNumber,
 	
-	[string] $NuSpecFilePath = ".\Package.nuspec",
+	[string] $NuSpecFilePath = ".\AutoUpdateProjectsMinimumRequiredClickOnceVersion.nuspec",
 	
 	[string] $ProjectFilePath,
 	
@@ -45,7 +45,7 @@ if (Test-Path $NugetFilePath)
 }
 
 # Create the Nuget package with the proper version number.
-NuGet pack "$thisScriptsDirectory/Package.nuspec" -OutputDirectory "$thisScriptsDirectory/Packages" -Version "$VersionNumber"
+NuGet pack "$thisScriptsDirectory/AutoUpdateProjectsMinimumRequiredClickOnceVersion.nuspec" -OutputDirectory "$thisScriptsDirectory/Packages" -Version "$VersionNumber"
 
 # Display where the new package was created to.
 $AbsolutePackagePath = [System.IO.Path]::GetFullPath($NugetFilePath)
