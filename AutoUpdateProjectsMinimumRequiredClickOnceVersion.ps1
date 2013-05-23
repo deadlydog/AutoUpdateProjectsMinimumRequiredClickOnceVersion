@@ -1,33 +1,41 @@
 <#
 .SYNOPSIS
-   This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version. 
+   This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version.
+   
 .DESCRIPTION
    This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version.
    Setting the MinimumRequiredVersion property forces the ClickOnce application to update automatically without prompting the user.
    
    You can also dot source this script in order to call the UpdateProjectsMinimumRequiredClickOnceVersion function directly.
+   
 .PARAMETER ProjectFilePaths
 	Array of paths of the .csproj and .vbproj files to process.
 	If not provided the script will search for and process all project files in the same directory as the script.
+	
 .PARAMETER DotSource
 	Provide this switch when dot sourcing the script, so that the script does not actually run.
 	Dot sourcing the script will allow you to directly call the UpdateProjectsMinimumRequiredClickOnceVersion function.
+	
 .EXAMPLE
 	Update all project files in the same directory as this script.
 	
 	& .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1
+	
 .EXAMPLE
 	Pass in a project file.
 	
 	& .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 -ProjectFilePaths "C:\Some project.csproj"
+	
 .EXAMPLE
 	Pass in multiple project files, using the -ProjectFilePaths alias "-p".
 	
 	& .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 -p "C:\Some project.csproj","C:\Another project.vbproj"
+	
 .EXAMPLE
 	Pipe multiple project files in.
 	
 	"C:\Some project.csproj","C:\Another project.vbproj" | & .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1
+	
 .EXAMPLE
 	Dot source the script into your script, allowing the UpdateProjectsMinimumRequiredClickOnceVersion function to be called directly.
 	Here we first dot source the script, providing the -DotSource switch so that the script does not try to process an files.
@@ -36,9 +44,13 @@
 	. .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 -DotSource
 	UpdateProjectsMinimumRequiredClickOnceVersion -ProjectFilePath "C:\Some project.csproj","C:\Another project.vbproj"
 	"C:\Yet another project.csproj","C:\And another project.vbproj" | UpdateProjectsMinimumRequiredClickOnceVersion
+	
+.LINK
+	Project Home: http://aupmrcov.codeplex.com
+	
 .NOTES
 	Author: Daniel Schroeder
-	Version: 1.5
+	Version: 1.5.1
 #>
 
 Param
