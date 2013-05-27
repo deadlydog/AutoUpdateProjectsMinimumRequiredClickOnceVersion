@@ -181,7 +181,7 @@ BEGIN
 			else
 			{
 				# Check the file out of TFS before writing to it.
-				CheckoutFileFromTFS($ProjectFilePath)
+				Tfs-Checkout($ProjectFilePath)
 			
 				# Update the file contents and write them back to the file.
 				$text = $rxMinimumRequiredVersionTag.Replace($text, "<MinimumRequiredVersion>" + $newMinimumRequiredVersion + "</MinimumRequiredVersion>")
@@ -191,12 +191,14 @@ BEGIN
 		}
 	}
 	
-	Function CheckoutFileFromTFS
+	Function Tfs-Checkout
 	{
 		param
 		(
-			[Parameter(Mandatory=$true, Position=0, HelpMessage="The local path to the file to checkout from TFS source control.")]
-			[string]$filePath
+			[Parameter(Mandatory=$true, Position=0, HelpMessage="The local path to the file or folder to checkout from TFS source control.")]
+			[string]$Path,
+			
+			[switch]$Recursive
 		)
 		
 		trap [Exception]
@@ -213,21 +215,22 @@ BEGIN
 		# Loop through each version from largest to smallest.
 		foreach ($vsCommonToolsPath in $vsCommonToolsPaths)
 		{
-			Write-Host $vsCommonToolsPath
 			if ($vsCommonToolsPath -ne $null)
 			{
 				$vsIdePath = "${vsCommonToolsPath}..\IDE\"
 				break
 			}
-			Write-Error "Unable to find Visual Studio Common Tool Path"
-			exit
+			throw "Unable to find Visual Studio Common Tool Path in order to locate tf.exe to check file out of TFS source control."
 		}
 	
 		# Get the path to tf.exe.
 		$TfPath = "${vsIdePath}tf.exe"
 		
 		# Check the file out of TFS.
-		& "$TfPath" checkout $filePath
+		if ($Recursive)
+			{ & "$TfPath" checkout "$Path" /recursive }
+		else
+			{ & "$TfPath" checkout "$Path" }
 	}
 }
 
