@@ -11,7 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Automatically force your ClickOnce app to update itself without prompting the user, making a less obtrusive end-user experience, and guaranteeing they are always using the latest version of the application.
 Adds a post-build event to the project to run a powershell script that updates the ClickOnce project's minimum required version in the .csproj/.vbproj file to the latest published version.
-Because the powershell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.</description>
+Because the powershell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.
+If it does not seem to be working or causes the build to fail, check the Output window for any errors that may have occurred.</description>
     <summary>Automatically force your ClickOnce app to update to the latest version without prompting the user.</summary>
     <releaseNotes>Updated comments to include project's url</releaseNotes>
     <copyright>Daniel Schroeder 2013</copyright>
