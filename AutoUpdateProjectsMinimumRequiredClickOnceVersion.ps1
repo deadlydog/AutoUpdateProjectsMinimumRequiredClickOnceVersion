@@ -57,11 +57,11 @@ Param
 (
 	[Parameter(Position=0, Mandatory=$false, ValueFromPipeline=$true, HelpMessage="Array of paths of the .csproj and .vbproj files to process.")]
 	[Alias("p")]
-	[String[]] $ProjectFilePaths,
+	[string[]] $ProjectFilePaths,
 	
 	[Parameter(Position=1, Mandatory=$false, HelpMessage="Provide this switch when dot sourcing the script.")]
 	[Alias("d")]
-	[Switch] $DotSource
+	[switch] $DotSource
 )
 
 BEGIN 
@@ -70,6 +70,12 @@ BEGIN
 	# 	This must come after a script's/function's param section.
 	# 	Forces a function to be the first non-comment code to appear in a PowerShell Module.
 	Set-StrictMode -Version Latest
+
+    # Throw an exception if client is not using the minimum required PowerShell version.
+    $REQUIRED_POWERSHELL_VERSION = 2.0  # The minimum Major.Minor PowerShell version that is required for the script to run.
+    $POWERSHELL_VERSION = $PSVersionTable.PSVersion.Major + ($PSVersionTable.PSVersion.Minor / 10)
+    if ($REQUIRED_POWERSHELL_VERSION -gt $POWERSHELL_VERSION)
+    { throw "PowerShell version $REQUIRED_POWERSHELL_VERSION is required for this script; You are only running version $POWERSHELL_VERSION. Please update PowerShell to at least version $REQUIRED_POWERSHELL_VERSION." }
 	
 	Function UpdateProjectsMinimumRequiredClickOnceVersion
 	{
@@ -79,7 +85,7 @@ BEGIN
 			[ValidatePattern("(.csproj|.vbproj)$")]
 			[ValidateScript({Test-Path $_})]
 			[Alias("p")]
-			[String] $ProjectFilePath
+			[string[]] $ProjectFilePaths
 		)
 		
 		BEGIN 
@@ -97,98 +103,102 @@ BEGIN
 		
 		PROCESS
 		{
-			# Catch any unhandled exceptions, write its error message, and exit the process with a non-zero error code to indicate failure.
-			trap [Exception]
-			{
-				[string]$errorMessage = [string]$_
-				[int]$exitCode = 1
+            foreach ($projectFilePath in [string[]]$ProjectFilePaths)
+            {
+			    # Catch any unhandled exceptions, write its error message, and exit the process with a non-zero error code to indicate failure.
+			    trap [Exception]
+			    {
+				    [string]$errorMessage = [string]$_
+				    [int]$exitCode = 1
 				
-				# If this is one of our custom exceptions, strip the error code off of the front.
-				if ([string]$errorMessage.SubString(0, 1) -match "\d")
-				{	
-					$exitCode = [string]$errorMessage.SubString(0, 1)
-					$errorMessage = [string]$errorMessage.SubString(1)
-				}
+				    # If this is one of our custom exceptions, strip the error code off of the front.
+				    if ([string]$errorMessage.SubString(0, 1) -match "\d")
+				    {	
+					    $exitCode = [string]$errorMessage.SubString(0, 1)
+					    $errorMessage = [string]$errorMessage.SubString(1)
+				    }
 			
-				Write-Error $errorMessage
-				EXIT [int]$exitCode
-			}
+                    # Write the error message and exit with an error code so that the Visual Studio build fails and the user notices that something is wrong.
+                    Write-Error $errorMessage
+                    EXIT [int]$exitCode
+			    }
 			
-			# Read the file contents in.
-			$text = [System.IO.File]::ReadAllText($ProjectFilePath)
+			    # Read the file contents in.
+			    $text = [System.IO.File]::ReadAllText($projectFilePath)
 			
-			# Get the current Minimum Required Version, and the Version that it should be.
-			$oldMinimumRequiredVersion = $rxMinimumRequiredVersionTag.Match($text).Groups["Version"].Value
-			$majorMinorBuild = $rxApplicationVersionTag.Match($text).Groups["Version"].Value
-			$revision = $rxApplicationRevisionTag.Match($text).Groups["Revision"].Value
-			$newMinimumRequiredVersion = [string]$majorMinorBuild + $revision
+			    # Get the current Minimum Required Version, and the Version that it should be.
+			    $oldMinimumRequiredVersion = $rxMinimumRequiredVersionTag.Match($text).Groups["Version"].Value
+			    $majorMinorBuild = $rxApplicationVersionTag.Match($text).Groups["Version"].Value
+			    $revision = $rxApplicationRevisionTag.Match($text).Groups["Revision"].Value
+			    $newMinimumRequiredVersion = [string]$majorMinorBuild + $revision
 			
-			# Get the Tag matches that we might need during the script.
-			$applicationVersionTagMatch = $rxApplicationVersionTag.Match($text)
-			$updateRequiredTagMatch = $rxUpdateRequiredTag.Match($text)
-			$updateEnabledTagMatch = $rxUpdateEnabledTag.Match($text)
+			    # Get the Tag matches that we might need during the script.
+			    $applicationVersionTagMatch = $rxApplicationVersionTag.Match($text)
+			    $updateRequiredTagMatch = $rxUpdateRequiredTag.Match($text)
+			    $updateEnabledTagMatch = $rxUpdateEnabledTag.Match($text)
 			
-			# If there was a problem constructing the new version number, throw an error.
-			if (-not $rxVersionNumber.Match($newMinimumRequiredVersion).Success)
-			{
-				throw "2'$ProjectFilePath' does not appear to have any ClickOnce deployment settings in it. You must publish the project at least once to create the ClickOnce deployment settings."
-			}
+			    # If there was a problem constructing the new version number, throw an error.
+			    if (-not $rxVersionNumber.Match($newMinimumRequiredVersion).Success)
+			    {
+				    throw "2'$projectFilePath' does not appear to have any ClickOnce deployment settings in it. You must publish the project at least once to create the ClickOnce deployment settings."
+			    }
 			
-			# If we couldn't find the old Minimum Required Version (i.e. it isn't setup in the project yet), add it.
-			if (-not $rxVersionNumber.Match($oldMinimumRequiredVersion).Success)
-			{	
-				# If we can get the Application Version Tag and the Update Required tag.
-				if ($applicationVersionTagMatch.Success -and $updateRequiredTagMatch.Success)
-				{
-					# Add the Minimum Required Version tag after the Application Version Tag.
-					$text = $rxApplicationVersionTag.Replace($text, $applicationVersionTagMatch.Value + "`n`t<MinimumRequiredVersion>" + $newMinimumRequiredVersion + "</MinimumRequiredVersion>")
+			    # If we couldn't find the old Minimum Required Version (i.e. it isn't setup in the project yet), add it.
+			    if (-not $rxVersionNumber.Match($oldMinimumRequiredVersion).Success)
+			    {	
+				    # If we can get the Application Version Tag and the Update Required tag.
+				    if ($applicationVersionTagMatch.Success -and $updateRequiredTagMatch.Success)
+				    {
+					    # Add the Minimum Required Version tag after the Application Version Tag.
+					    $text = $rxApplicationVersionTag.Replace($text, $applicationVersionTagMatch.Value + "`n`t<MinimumRequiredVersion>" + $newMinimumRequiredVersion + "</MinimumRequiredVersion>")
 				
-					# Make sure Update Required is set to true.
-					$text = $rxUpdateRequiredTag.Replace($text, "<UpdateRequired>true</UpdateRequired>")
-				}
-				# Else throw an error to have the user setup the Minimum Required Version manually.
-				else
-				{
-					throw "3'$ProjectFilePath' is not currently set to enforce a MinimumRequiredVersion. To fix this in Visual Studio go to the Project's Properties->Publish->Updates... and check off 'Specify a minimum required version for this application'."
-				}
-			}
+					    # Make sure Update Required is set to true.
+					    $text = $rxUpdateRequiredTag.Replace($text, "<UpdateRequired>true</UpdateRequired>")
+				    }
+				    # Else throw an error to have the user setup the Minimum Required Version manually.
+				    else
+				    {
+					    throw "3'$projectFilePath' is not currently set to enforce a MinimumRequiredVersion. To fix this in Visual Studio go to the Project's Properties->Publish->Updates... and check off 'Specify a minimum required version for this application'."
+				    }
+			    }
 			
-			# If the Updates Enabled tag is defined, check its value.
-			if ($updateEnabledTagMatch.Success)
-			{
-				# If the application has updates disabled, enable them.
-				if ($updateEnabledTagMatch.Groups["BoolValue"].Value -ne "true")
-				{
-					$text = $rxUpdateEnabledTag.Replace($text, "<UpdateEnabled>true</UpdateEnabled>")
-				}
-			}
-			# Else the Updates Enabled tag is not defined, so if the Application Version tag is defined, add it below that one.
-			elseif ($applicationVersionTagMatch.Success)
-			{
-				$text = $rxApplicationVersionTag.Replace($text, $applicationVersionTagMatch.Value + "`n`t<UpdateEnabled>true</UpdateEnabled>")
-			}
-			# Else the Updates Enabled and Application Version tags are not defined, so throw error to have user turn on automatic updates manually.
-			else
-			{
-				throw "4'$ProjectFilePath' is not currently set to allow automatic updates. To fix this in Visual Studio go to the Project's Properties->Publish->Updates... and check off 'The application should check for updates'."
-			}
+			    # If the Updates Enabled tag is defined, check its value.
+			    if ($updateEnabledTagMatch.Success)
+			    {
+				    # If the application has updates disabled, enable them.
+				    if ($updateEnabledTagMatch.Groups["BoolValue"].Value -ne "true")
+				    {
+					    $text = $rxUpdateEnabledTag.Replace($text, "<UpdateEnabled>true</UpdateEnabled>")
+				    }
+			    }
+			    # Else the Updates Enabled tag is not defined, so if the Application Version tag is defined, add it below that one.
+			    elseif ($applicationVersionTagMatch.Success)
+			    {
+				    $text = $rxApplicationVersionTag.Replace($text, $applicationVersionTagMatch.Value + "`n`t<UpdateEnabled>true</UpdateEnabled>")
+			    }
+			    # Else the Updates Enabled and Application Version tags are not defined, so throw error to have user turn on automatic updates manually.
+			    else
+			    {
+				    throw "4'$projectFilePath' is not currently set to allow automatic updates. To fix this in Visual Studio go to the Project's Properties->Publish->Updates... and check off 'The application should check for updates'."
+			    }
 		
-			# Only write to the file if it is not already up to date.
-			if ($newMinimumRequiredVersion -eq $oldMinimumRequiredVersion)
-			{
-				Write-Host "The Minimum Required Version of '$ProjectFilePath' is already up-to-date on version '$newMinimumRequiredVersion'."
-			}
-			else
-			{
-				# Check the file out of TFS before writing to it.
-				Tfs-Checkout($ProjectFilePath)
+			    # Only write to the file if it is not already up to date.
+			    if ($newMinimumRequiredVersion -eq $oldMinimumRequiredVersion)
+			    {
+				    Write-Host "The Minimum Required Version of '$projectFilePath' is already up-to-date on version '$newMinimumRequiredVersion'."
+			    }
+			    else
+			    {
+				    # Check the file out of TFS before writing to it.
+				    Tfs-Checkout($projectFilePath)
 			
-				# Update the file contents and write them back to the file.
-				$text = $rxMinimumRequiredVersionTag.Replace($text, "<MinimumRequiredVersion>" + $newMinimumRequiredVersion + "</MinimumRequiredVersion>")
-				[System.IO.File]::WriteAllText($ProjectFilePath, $text)
-				Write-Host "Updated Minimum Required Version of '$ProjectFilePath' from '$oldMinimumRequiredVersion' to '$newMinimumRequiredVersion'"
-			}
-		}
+				    # Update the file contents and write them back to the file.
+				    $text = $rxMinimumRequiredVersionTag.Replace($text, "<MinimumRequiredVersion>" + $newMinimumRequiredVersion + "</MinimumRequiredVersion>")
+				    [System.IO.File]::WriteAllText($projectFilePath, $text)
+				    Write-Host "Updated Minimum Required Version of '$projectFilePath' from '$oldMinimumRequiredVersion' to '$newMinimumRequiredVersion'"
+			    }
+		    }
+        }
 	}
 	
 	Function Tfs-Checkout
@@ -249,9 +259,10 @@ PROCESS
 	{ 
 		# Get the directory that this script is in.
 		$scriptDirectory = Split-Path $MyInvocation.MyCommand.Path -Parent
-		
+
 		# Create array of project file paths.
-		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj" | foreach { $ProjectFilePaths += $_}
+        $ProjectFilePaths = @()
+		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj" | foreach { $ProjectFilePaths += $_.FullName }
 	}
 	
 	# If there are no files to process, display a message.
