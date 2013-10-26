@@ -10,4 +10,4 @@ bin/
 obj/
 _[Rr]e[Ss]harper.*
 *.bin
-Packages/
+*.nupkg
