@@ -83,7 +83,7 @@ BEGIN
 		(
 			[Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, HelpMessage="The project file (.csproj or .vbproj) to update.")]
 			[ValidatePattern("(.csproj|.vbproj)$")]
-			[ValidateScript({Test-Path $_})]
+			[ValidateScript({Test-Path $_ -PathType Leaf})]
 			[Alias("p")]
 			[string] $ProjectFilePath
 		)
