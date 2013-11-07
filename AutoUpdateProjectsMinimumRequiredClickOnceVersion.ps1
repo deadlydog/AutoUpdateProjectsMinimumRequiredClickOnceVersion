@@ -1,3 +1,4 @@
+#Requires -Version 2.0
 <#
 .SYNOPSIS
    This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version.
@@ -71,12 +72,6 @@ BEGIN
 	# 	Forces a function to be the first non-comment code to appear in a PowerShell Module.
 	Set-StrictMode -Version Latest
 
-    # Throw an exception if client is not using the minimum required PowerShell version.
-    $REQUIRED_POWERSHELL_VERSION = 2.0  # The minimum Major.Minor PowerShell version that is required for the script to run.
-    $POWERSHELL_VERSION = $PSVersionTable.PSVersion.Major + ($PSVersionTable.PSVersion.Minor / 10)
-    if ($REQUIRED_POWERSHELL_VERSION -gt $POWERSHELL_VERSION)
-    { throw "PowerShell version $REQUIRED_POWERSHELL_VERSION is required for this script; You are only running version $POWERSHELL_VERSION. Please update PowerShell to at least version $REQUIRED_POWERSHELL_VERSION." }
-	
 	Function UpdateProjectsMinimumRequiredClickOnceVersion
 	{
 		Param
