@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>AutoUpdateProjectsMinimumRequiredClickOnceVersion</id>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <title>AutoUpdateProjectsMinimumRequiredClickOnceVersion</title>
     <authors>Daniel Schroeder,iQmetrix</authors>
     <owners>Daniel Schroeder,iQmetrix</owners>
@@ -14,9 +14,7 @@ Adds a post-build event to the project to run a powershell script that updates t
 Because the powershell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.
 If it does not seem to be working or causes the build to fail, check the Output window for any errors that may have occurred.</description>
     <summary>Automatically force your ClickOnce app to update to the latest version without prompting the user.</summary>
-    <releaseNotes>- Added check to make sure user has at least PowerShell v2.0 installed.
-- Updated code to process files passed in from the pipeline properly.
-- Fixed bug where it wouldn't process all of the files in the current directory properly.</releaseNotes>
+    <releaseNotes>- Fixed syntax error that would only be thrown on some machines.</releaseNotes>
     <copyright>Daniel Schroeder 2013</copyright>
     <tags>ClickOnce Click Once Auto Automatic Automatically Update Project Minimum Min Required Version PowerShell Power Shell</tags>
   </metadata>

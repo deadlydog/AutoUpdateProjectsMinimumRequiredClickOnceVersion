@@ -51,7 +51,7 @@
 	
 .NOTES
 	Author: Daniel Schroeder
-	Version: 1.5.3
+	Version: 1.5.4
 #>
 
 Param
@@ -77,7 +77,7 @@ BEGIN
 		Param
 		(
 			[Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, HelpMessage="The project file (.csproj or .vbproj) to update.")]
-			[ValidatePattern("(.csproj|.vbproj)$")]
+			[ValidatePattern('(.csproj|.vbproj)$')]
 			[ValidateScript({Test-Path $_ -PathType Leaf})]
 			[Alias("p")]
 			[string] $ProjectFilePath
