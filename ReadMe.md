@@ -8,7 +8,7 @@ Additional documentation for manually installing and troubleshooting the PowerSh
 
 Because the .csproj file is modified outside of Visual Studio by the PowerShell script, the first successful build after publishing a new ClickOnce version of the app will ask you to reload the project. I recommend installing the [Workspace Reloader Visual Studio extension](http://visualstudiogallery.msdn.microsoft.com/6705affd-ca37-4445-9693-f3d680c92f38) to prevent the reloading of the project from closing any tabs that you have open.
 
-Requires Visual Studio and PowerShell (and thus, the Windows operating system).
+Requires Visual Studio and PowerShell.
 
 ![](docs/Images/NavigateToManageNugetPackages.png)
 ![](docs/Images/InstallPackageWindow.png)
