@@ -47,7 +47,7 @@
 	"C:\Yet another project.csproj","C:\And another project.vbproj" | UpdateProjectsMinimumRequiredClickOnceVersion
 	
 .LINK
-	Project Home: http://aupmrcov.codeplex.com
+	Project Home: https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion
 	
 .NOTES
 	Author: Daniel Schroeder
