@@ -6,12 +6,12 @@
     <title>AutoUpdateProjectsMinimumRequiredClickOnceVersion</title>
     <authors>Daniel Schroeder,iQmetrix</authors>
     <owners>Daniel Schroeder,iQmetrix</owners>
-    <licenseUrl>https://aupmrcov.codeplex.com/license</licenseUrl>
-    <projectUrl>https://aupmrcov.codeplex.com/</projectUrl>
+    <licenseUrl>https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion/blob/master/License.md</licenseUrl>
+    <projectUrl>https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Automatically force your ClickOnce app to update itself without prompting the user, making a less obtrusive end-user experience, and guaranteeing they are always using the latest version of the application.
-Adds a post-build event to the project to run a powershell script that updates the ClickOnce project's minimum required version in the .csproj/.vbproj file to the latest published version.
-Because the powershell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.
+Adds a post-build event to the project to run a PowerShell script that updates the ClickOnce project's minimum required version in the .csproj/.vbproj file to the latest published version.
+Because the PowerShell script modifies the .csproj/.vbproj file outside of Visual Studio, the first time you do a build after publishing a new ClickOnce version, if you have any files from that project open you will be prompted to reload the project.  In order to prevent this from closing your open tabs, I recommend installing Scott Hanselman’s Workspace Reloader Visual Studio extension.
 If it does not seem to be working or causes the build to fail, check the Output window for any errors that may have occurred.</description>
     <summary>Automatically force your ClickOnce app to update to the latest version without prompting the user.</summary>
     <releaseNotes>- Fixed syntax error that would only be thrown on some machines.</releaseNotes>
