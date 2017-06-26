@@ -19,7 +19,7 @@ If it does not seem to be working or causes the build to fail, check the Output 
     <tags>ClickOnce Click Once Auto Automatic Automatically Update Project Minimum Min Required Version PowerShell Power Shell</tags>
   </metadata>
   <files>
-    <file src="..\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" target="content\PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" />
+    <file src="..\..\src\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" target="content\PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" />
     <file src="tools\Install.ps1" target="tools\Install.ps1" />
     <file src="tools\Uninstall.ps1" target="tools\Uninstall.ps1" />
   </files>
