@@ -5,7 +5,7 @@ Automatically force the ClickOnce app to update itself without prompting the use
 
 ## Installation
 
-### Regular Projects
+### Non .Net Core Projects
 
 This project is [available on Nuget](https://nuget.org/packages/AutoUpdateProjectsMinimumRequiredClickOnceVersion), which will handle all of the setup for you.  It adds a post-build event to the project to run a PowerShell script that updates the ClickOnce application's minimum required version in the .csproj file to the latest published version. This will eliminate the prompt that asks the user if they want to download and install the latest version; instead the update will automatically be downloaded and installed.
 
