@@ -6,11 +6,9 @@ Simply download and install the [NuGet package](https://nuget.org/packages/AutoU
 
 Alternatively, you can use this script and [manually configure the project through Visaul Studio yourself](HowToMakeVisualStudioRunThePowerShellScriptAutomatically.md).
 
-
 ## Troubleshooting
 
 If for some reason the script is not updating your project's MinimumRequiredVersion to the latest published version, check the Visual Studio Output window for error messages thrown by the PowerShell script.
-
 
 ## Manually Running The PowerShell Script
 
