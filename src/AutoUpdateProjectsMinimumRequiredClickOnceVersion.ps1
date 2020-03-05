@@ -109,9 +109,11 @@ Begin
 					$errorMessage = [string]$errorMessage.SubString(1)
 				}
 
+				$errorMessage += ' See the project homepage for more details: https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion'
+
                 # Write the error message and exit with an error code so that the Visual Studio build fails and the user notices that something is wrong.
                 Write-Error $errorMessage
-                EXIT [int]$exitCode
+                exit [int]$exitCode
 			}
 
 			# Read the file contents in.
@@ -358,7 +360,7 @@ Process
 	# If there are no files to process, display a message.
 	if (-not($ProjectFilePaths))
 	{
-		Throw "No project files were found to be processed."
+		throw "No project files were found to be processed."
 	}
 
 	# Process each of the project files in the comma-separated list.
