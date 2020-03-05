@@ -6,7 +6,7 @@
     <title>AutoUpdateProjectsMinimumRequiredClickOnceVersion</title>
     <authors>Daniel Schroeder,iQmetrix</authors>
     <owners>Daniel Schroeder,iQmetrix</owners>
-    <licenseUrl>https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion/blob/master/License.md</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Automatically force your ClickOnce app to update itself without prompting the user, making a less obtrusive end-user experience, and guaranteeing they are always using the latest version of the application.
