@@ -43,7 +43,7 @@ If for some reason the script is not updating your project's MinimumRequiredVers
 
 ## Manually Running The PowerShell Script
 
-Detailed help documentation for manually running the script in PowerShell can be obtained by running the Get-Help cmdlet against the script in a PowerShell window.
+Detailed help documentation for manually running [the PowerShell script](/src/AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1) can be obtained by running the Get-Help cmdlet against the script in a PowerShell window.
 
 For example, open up a Windows PowerShell command prompt, navigate to the folder containing the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 script, and enter:
 
