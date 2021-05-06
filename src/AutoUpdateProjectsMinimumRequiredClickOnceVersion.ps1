@@ -1,24 +1,24 @@
 #Requires -Version 2.0
 <#
 .SYNOPSIS
-   This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version.
+   This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
 
 .DESCRIPTION
-   This script finds the current ClickOnce version in a project file (.csproj or .vbproj), and updates the MinimumRequiredVersion to be this same version.
+   This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
    Setting the MinimumRequiredVersion property forces the ClickOnce application to update automatically without prompting the user.
 
    You can also dot source this script in order to call the UpdateProjectsMinimumRequiredClickOnceVersion function directly.
 
 .PARAMETER ProjectFilePaths
-	Array of paths of the .csproj and .vbproj files to process.
-	If not provided the script will search for and process all project files in the same directory as the script.
+	Array of paths of the .csproj, .vbproj or .pubxml files to process.
+	If not provided the script will search for and process all project files and publish profile files in the same directory as the script.
 
 .PARAMETER DotSource
 	Provide this switch when dot sourcing the script, so that the script does not actually run.
 	Dot sourcing the script will allow you to directly call the UpdateProjectsMinimumRequiredClickOnceVersion function.
 
 .EXAMPLE
-	Update all project files in the same directory as this script.
+	Update all project files and publish profile files in the same directory as this script.
 
 	& .\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1
 
@@ -56,7 +56,7 @@
 
 Param
 (
-	[Parameter(Position=0, Mandatory=$false, ValueFromPipeline=$true, HelpMessage="Array of paths of the .csproj and .vbproj files to process.")]
+	[Parameter(Position=0, Mandatory=$false, ValueFromPipeline=$true, HelpMessage="Array of paths of the .csproj, .vbproj or .pubxml files to process.")]
 	[Alias("p")]
 	[string[]] $ProjectFilePaths,
 
@@ -76,8 +76,8 @@ Begin
 	{
 		Param
 		(
-			[Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, HelpMessage="The project file (.csproj or .vbproj) to update.")]
-			[ValidatePattern('(.csproj|.vbproj)$')]
+			[Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, HelpMessage="The project file (.csproj or .vbproj) or publish profile file (.pubxml) to update.")]
+			[ValidatePattern('(.csproj|.vbproj|.pubxml)$')]
 			[ValidateScript({Test-Path $_ -PathType Leaf})]
 			[Alias("p")]
 			[string] $ProjectFilePath
@@ -214,6 +214,12 @@ Begin
 		if ([string]::IsNullOrEmpty($tfExecutablePath))
 		{
 			throw 'Could not locate TF.exe to check files out of Team Foundation Version Control if necessary.'
+		}
+
+		$output = & "$tfExecutablePath" workfold "$Path" 2>&1
+		if ($output -like '*Unable to determine the source control*')
+		{
+			return
 		}
 
 		# Check the file out of TFS.
@@ -354,7 +360,7 @@ Process
 
 		# Create array of project file paths.
         $ProjectFilePaths = @()
-		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj" | foreach { $ProjectFilePaths += $_.FullName }
+		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj","*.pubxml" | foreach { $ProjectFilePaths += $_.FullName }
 	}
 
 	# If there are no files to process, display a message.
