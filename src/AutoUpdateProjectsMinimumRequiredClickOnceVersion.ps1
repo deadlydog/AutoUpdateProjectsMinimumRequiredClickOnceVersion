@@ -51,7 +51,7 @@
 
 .NOTES
 	Author: Daniel Schroeder
-	Version: 1.5.5
+	Version: 1.6.0
 #>
 
 Param
