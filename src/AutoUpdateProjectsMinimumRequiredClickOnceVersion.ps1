@@ -216,6 +216,12 @@ Begin
 			throw 'Could not locate TF.exe to check files out of Team Foundation Version Control if necessary.'
 		}
 
+		$output = & "$tfExecutablePath" workfold "$Path" 2>&1
+		if ($output -like '*Unable to determine the source control*')
+		{
+			return
+		}
+
 		# Check the file out of TFS.
 		if ($Recursive)
 			{ & "$tfExecutablePath" checkout "$Path" /recursive }
