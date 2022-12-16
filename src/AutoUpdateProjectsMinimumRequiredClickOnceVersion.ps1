@@ -361,6 +361,7 @@ Process
 		# Create array of project file paths.
         $ProjectFilePaths = @()
 		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj","*.pubxml" | foreach { $ProjectFilePaths += $_.FullName }
+		Get-Item "$scriptDirectory\..\Properties\PublishProfiles\*" -Include "*.csproj","*.vbproj","*.pubxml" | foreach { $ProjectFilePaths += $_.FullName }
 	}
 
 	# If there are no files to process, display a message.
