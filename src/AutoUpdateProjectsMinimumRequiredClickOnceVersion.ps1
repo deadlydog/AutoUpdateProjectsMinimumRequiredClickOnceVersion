@@ -51,7 +51,7 @@
 
 .NOTES
 	Author: Daniel Schroeder
-	Version: 1.6.0
+	Version: 1.7.0
 #>
 
 Param
@@ -358,10 +358,10 @@ Process
 		# Get the directory that this script is in.
 		$scriptDirectory = Split-Path $MyInvocation.MyCommand.Path -Parent
 
-		# Create array of project file paths.
-        $ProjectFilePaths = @()
-		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj","*.pubxml" | foreach { $ProjectFilePaths += $_.FullName }
-		Get-Item "$scriptDirectory\..\Properties\PublishProfiles\*" -Include "*.csproj","*.vbproj","*.pubxml" | foreach { $ProjectFilePaths += $_.FullName }
+		# Get all of the project files in the same directory as this script.
+		$ProjectFilePaths = @()
+		Get-Item "$scriptDirectory\*" -Include "*.csproj","*.vbproj","*.pubxml" |
+			ForEach-Object { $ProjectFilePaths += $_.FullName }
 	}
 
 	# If there are no files to process, display a message.
@@ -370,6 +370,16 @@ Process
 		throw "No project files were found to be processed."
 	}
 
-	# Process each of the project files in the comma-separated list.
-	$ProjectFilePaths | UpdateProjectsMinimumRequiredClickOnceVersion
+	# .NET Core stores the settings in a publish profile instead of directly in the project file, so we need to grab those too.
+	[string[]] $filePathsToProcess = $ProjectFilePaths
+
+	# Get any publish profiles for each of the projects.
+	$ProjectFilePaths | ForEach-Object {
+		[string] $projectDirectory = Split-Path $_ -Parent
+		Get-Item "$projectDirectory\Properties\PublishProfiles\*" -Include "*.pubxml" |
+			ForEach-Object { $filePathsToProcess += $_.FullName }
+	}
+
+	# Process each of the project and publish profile files.
+	$filePathsToProcess | UpdateProjectsMinimumRequiredClickOnceVersion
 }
