@@ -1,13 +1,13 @@
 #Requires -Version 2.0
 <#
 .SYNOPSIS
-   This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
+	This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
 
 .DESCRIPTION
-   This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
-   Setting the MinimumRequiredVersion property forces the ClickOnce application to update automatically without prompting the user.
+	This script finds the current ClickOnce version in a project file (.csproj or .vbproj) or a publish profile file (.pubxml), and updates the MinimumRequiredVersion to be this same version.
+	Setting the MinimumRequiredVersion property forces the ClickOnce application to update automatically without prompting the user.
 
-   You can also dot source this script in order to call the UpdateProjectsMinimumRequiredClickOnceVersion function directly.
+	You can also dot source this script in order to call the UpdateProjectsMinimumRequiredClickOnceVersion function directly.
 
 .PARAMETER ProjectFilePaths
 	Array of paths of the .csproj, .vbproj or .pubxml files to process.
@@ -111,9 +111,9 @@ Begin
 
 				$errorMessage += ' See the project homepage for more details: https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion'
 
-                # Write the error message and exit with an error code so that the Visual Studio build fails and the user notices that something is wrong.
-                Write-Error $errorMessage
-                exit [int]$exitCode
+				# Write the error message and exit with an error code so that the Visual Studio build fails and the user notices that something is wrong.
+				Write-Error $errorMessage
+				exit [int]$exitCode
 			}
 
 			# Read the file contents in.
@@ -301,7 +301,7 @@ Begin
 	}
 
 	function Get-CommonVisualStudioDirectoryPath
- 	{
+	{
 		[string] $programFilesDirectory = $null
 		try
 		{
