@@ -1,6 +1,6 @@
 # 💬 Project Description
 
-Automatically force the ClickOnce app to update itself without prompting the user; this is less obtrusive to the user experience when receiving updates, and enhances security by ensuring the latest version is used.
+Automatically force your ClickOnce app to update itself without prompting the user; this is less obtrusive to the user experience when receiving updates, and enhances security by ensuring the latest version is always used.
 
 This is a PowerShell script that updates the ClickOnce application's minimum required version to the latest published version.
 This will eliminate the prompt that asks the user if they want to download and install the latest version; instead the update will automatically be downloaded and installed.
@@ -18,7 +18,7 @@ If you are using a .NET Framework project, simply install the [AutoUpdateProject
 ![Install package window](docs/Images/InstallPackageWindow.png)
 ![File added to project](docs/Images/FileAddedToProject.png)
 
-As you can see in the last screenshot, the NuGet package will add a "PostBuildScripts" folder to your project that contains the PowerShell script that is ran after each build.
+As you can see in the last screenshot above, the NuGet package will add a `PostBuildScripts` folder to your project that contains the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script that is ran after each build.
 It also update's the project file to add a post-build event to run the PowerShell script.
 
 ### .NET Core Project Installation (e.g. .NET Core 3.1, .NET 5, .NET 6, etc.)
@@ -29,7 +29,7 @@ Instead of using the NuGet package, you will instead need to manually add the Po
 The steps to do this are:
 
 1. In Visual Studio, right-click on your project and add a new folder called `PostBuildEvents`.
-1. Download the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script and save it to the `PostBuildEvents` folder.
+1. Download [the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script](src/AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1) and save it to the `PostBuildEvents` folder.
 1. You should now see the PowerShell script in the `PostBuildEvents` folder in Solution Explorer.
    1. If you do not see the PowerShell file in Visual Studio, right-click on the `PostBuildEvents` folder and choose `Add` > `Existing Item...`.
    Select the PowerShell script that you downloaded and saved to the `PostBuildEvents` folder.
@@ -40,6 +40,8 @@ The steps to do this are:
    REM Update the ClickOnce MinimumRequiredVersion so that it auto-updates without prompting.
    PowerShell -ExecutionPolicy Bypass -Command "& '$(ProjectDir)PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1' -ProjectFilePaths '$(ProjectPath)'"
    ```
+
+The end result should look like this:
 
 ![Add PowerShell file to project and add post-build event](docs/Images/AddScriptAndPostBuildEventToNetCoreProject.png)
 
