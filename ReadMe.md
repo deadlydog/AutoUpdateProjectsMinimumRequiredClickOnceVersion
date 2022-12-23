@@ -10,9 +10,11 @@ This will eliminate the prompt that asks the user if they want to download and i
 The installation instructions below are intended to be used when publishing your ClickOnce app from Visual Studio.
 If you are looking to publish your ClickOnce app from a CI/CD pipeline, check out [this blog post](https://blog.danskingdom.com/continuously-deploy-your-clickonce-application-from-your-build-server/).
 
-### .NET Framework Project Installation
+### .NET Framework Project and Packages.config Installation
 
-If you are using a .NET Framework project, simply install the [AutoUpdateProjectsMinimumRequiredClickOnceVersion NuGet package](https://nuget.org/packages/AutoUpdateProjectsMinimumRequiredClickOnceVersion) to your project, and it will automatically handle all of the installation for you.
+If you are using a .NET Framework project, as well as the `packages.config` package management format, simply install the [AutoUpdateProjectsMinimumRequiredClickOnceVersion NuGet package](https://nuget.org/packages/AutoUpdateProjectsMinimumRequiredClickOnceVersion) to your project, and it will automatically handle all of the installation for you.
+
+> NOTE: If you are using the PackageReference NuGet package management format, you will need to follow the manual installation instructions in the following section below.
 
 ![Navigate to Manage NuGet Packages](docs/Images/NavigateToManageNugetPackages.png)
 ![Install package window](docs/Images/InstallPackageWindow.png)
@@ -21,9 +23,10 @@ If you are using a .NET Framework project, simply install the [AutoUpdateProject
 As you can see in the last screenshot above, the NuGet package will add a `PostBuildScripts` folder to your project that contains the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script that is ran after each build.
 It also update's the project file to add a post-build event to run the PowerShell script.
 
-### .NET Core Project Installation (e.g. .NET Core 3.1, .NET 5, .NET 6, etc.)
+### .NET Core Project / PackageReference Installation (e.g. .NET Core 3.1, .NET 5, .NET 6, etc.)
 
-.NET Core projects do not support NuGet packages running scripts during installation, so it cannot automatically add the required post-build event to the project.
+.NET Core projects use the PackageReference NuGet package management format, where NuGet package references are stored directly in the project file instead of a separate `packages.config` file.
+Unfortunately the PackageReference format does not support NuGet packages running scripts during installation, so it cannot automatically add the required post-build event to the project.
 
 Instead of using the NuGet package, you will instead need to manually add the PowerShell script to your project, and add the post-build event to the project file.
 The steps to do this are:
