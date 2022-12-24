@@ -32,7 +32,7 @@ Instead of using the NuGet package, you will instead need to manually add the Po
 The steps to do this are:
 
 1. In Visual Studio, right-click on your project and add a new folder called `PostBuildEvents`.
-1. Download [the AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script](src/AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1) and save it to the `PostBuildEvents` folder.
+1. Download [the latest AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script](https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion/releases) and save it to the `PostBuildEvents` folder.
 1. You should now see the PowerShell script in the `PostBuildEvents` folder in Solution Explorer.
    1. If you do not see the PowerShell file in Visual Studio, right-click on the `PostBuildEvents` folder and choose `Add` > `Existing Item...`.
    Select the PowerShell script that you downloaded and saved to the `PostBuildEvents` folder.
