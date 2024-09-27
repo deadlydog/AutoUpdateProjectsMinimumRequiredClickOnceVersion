@@ -31,11 +31,11 @@ Unfortunately the PackageReference format does not support NuGet packages runnin
 Instead of using the NuGet package, you will instead need to manually add the PowerShell script to your project, and add the post-build event to the project file.
 The steps to do this are:
 
-1. In Visual Studio, right-click on your project and add a new folder called `PostBuildEvents`.
-1. Download [the latest AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script](https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion/releases) and save it to the `PostBuildEvents` folder.
-1. You should now see the PowerShell script in the `PostBuildEvents` folder in Solution Explorer.
-   1. If you do not see the PowerShell file in Visual Studio, right-click on the `PostBuildEvents` folder and choose `Add` > `Existing Item...`.
-   Select the PowerShell script that you downloaded and saved to the `PostBuildEvents` folder.
+1. In Visual Studio, right-click on your project and add a new folder called `PostBuildScripts`.
+1. Download [the latest AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1 PowerShell script](https://github.com/deadlydog/AutoUpdateProjectsMinimumRequiredClickOnceVersion/releases) and save it to the `PostBuildScripts` folder.
+1. You should now see the PowerShell script in the `PostBuildScripts` folder in Solution Explorer.
+   1. If you do not see the PowerShell file in Visual Studio, right-click on the `PostBuildScripts` folder and choose `Add` > `Existing Item...`.
+   Select the PowerShell script that you downloaded and saved to the `PostBuildScripts` folder.
 1. In Visual Studio, right-click on the project and choose `Properties`.
 1. Navigate to the `Build` > `Events` tab, and paste the following code into the `Post-build event` text box:
 
