@@ -51,7 +51,7 @@
 
 .NOTES
 	Author: Daniel Schroeder
-	Version: 1.7.0
+	Version: 1.7.1
 #>
 
 Param
@@ -375,9 +375,13 @@ Process
 
 	# Get any publish profiles for each of the projects.
 	$ProjectFilePaths | ForEach-Object {
-		[string] $projectDirectory = Split-Path $_ -Parent
-		Get-Item "$projectDirectory\Properties\PublishProfiles\*" -Include "*.pubxml" |
-			ForEach-Object { $filePathsToProcess += $_.FullName }
+		[string] $projectDirectory = Split-Path -Path $_ -Parent
+		[string] $publishProfilesDirectory = Join-Path -Path $projectDirectory -ChildPath 'Properties\PublishProfiles'
+		if (Test-Path -Path $publishProfilesDirectory -PathType Container)
+		{
+			Get-Item "$publishProfilesDirectory\*" -Include "*.pubxml" |
+				ForEach-Object { $filePathsToProcess += $_.FullName }
+		}
 	}
 
 	# Process each of the project and publish profile files.
